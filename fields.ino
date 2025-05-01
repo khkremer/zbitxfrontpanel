@@ -237,12 +237,12 @@ struct field *field_select(const char *label){
 		return NULL;
 
 	if (!strcmp(f->label, "MENU")){
-		dialog_box("Radio", "10M/12M/15M/17M/20M/30M/40M/60M/80M/AGC/VFO/SPLIT/CLOSE");
+		dialog_box("Radio", "10M/12M/15M/17M/20M/30M/40M/60M/80M/AGC/VFO/SPLIT/CLOSE/SHUTDOWN");
 		return NULL;
 	}
 
 	if (!strcmp(f->label, "SET")){
-		dialog_box("Settings", "MY CALL/MYCALLSIGN/MY GRID/MYGRID/PASS KEY/PASSKEY/CW_INPUT/CW_DELAY/SIDETONE/CLOSE/SHUTDOWN");
+		dialog_box("Settings", "MY CALL/MYCALLSIGN/MY GRID/MYGRID/PASS KEY/PASSKEY/CW_INPUT/CW_DELAY/SIDETONE/CLOSE");
 		return NULL;
 	}
 
@@ -251,6 +251,7 @@ struct field *field_select(const char *label){
 	}
 
 	//this can get recusrive, it is calling field_select() again
+  Serial.print("KHK: "), Serial.println(f->label);
 
 	if (!strcmp(f->label, "OPEN")){
 		f_selected = NULL;
@@ -280,9 +281,6 @@ struct field *field_select(const char *label){
       dialog_box("Please wait...", "WAITFORSHUTDOWN");
   	  f_selected = NULL;
       return NULL;
-  	}
-    else {
-        return NULL;
   	}
 
   if (f_selected)
