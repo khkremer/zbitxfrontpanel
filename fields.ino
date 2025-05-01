@@ -242,7 +242,7 @@ struct field *field_select(const char *label){
 	}
 
 	if (!strcmp(f->label, "SET")){
-		dialog_box("Settings", "MY CALL/MYCALLSIGN/MY GRID/MYGRID/PASS KEY/PASSKEY/CW_INPUT/CW_DELAY/SIDETONE/CLOSE");
+		dialog_box("Settings", "MY CALL/MYCALLSIGN/MY GRID/MYGRID/PASS KEY/PASSKEY/CW_INPUT/CW_DELAY/SIDETONE/CLOSE/SHUTDOWN");
 		return NULL;
 	}
 
@@ -265,6 +265,25 @@ struct field *field_select(const char *label){
 	else if (!strcmp(f_selected->label, "SAVE")){
 		logbook_init();
 	}
+    else if (!strcmp(f->label, "SHUTDOWN")) {
+      f_selected = NULL;
+      struct field *f = dialog_box("Continue with Shutdown?", "CANCEL/CONFIRM");
+      Serial.println("Checking for confirmation");
+      f_selected = NULL;
+      return NULL;
+    }
+    else if (!strcmp(f->label, "CONFIRM")) {
+      f_selected = NULL;
+      Serial.println("Yup, shutdown the radio");
+      f->label = "SHUTDOWN";
+      field_post_to_radio(f);
+      dialog_box("Please wait...", "WAITFORSHUTDOWN");
+  	  f_selected = NULL;
+      return NULL;
+  	}
+    else {
+        return NULL;
+  	}
 
   if (f_selected)
     f_selected->redraw = true; // redraw without the focus
